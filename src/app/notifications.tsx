@@ -1,6 +1,6 @@
-import React from 'react';
-import { Alert, Button, View } from 'react-native';
-import * as Notifications from 'expo-notifications';
+import React from "react";
+import { Alert, Button, View } from "react-native";
+import * as Notifications from "expo-notifications";
 
 // Interface para as props
 interface NotificationProps {
@@ -17,11 +17,8 @@ const now = new Date();
 
 if (selectedTime > now) {
     return selectedTime; // Retorna a data se for no futuro
-} else if (selectedTime.getTime() === now.getTime()) {
-    Alert.alert('Bem-vindo!');
-    return null;
 } else {
-    Alert.alert('Hora inválida', 'Escolha um horário no futuro.');
+    Alert.alert("Hora inválida", "Escolha um horário no futuro.");
     return null;
 }
 };
@@ -31,7 +28,7 @@ const scheduleNotification = async () => {
 const hora = handleAgenda(data);
 if (!hora) return; // Se for inválido, não agenda
 
-// Agendar a notificação
+// Configurações da notificação
 await Notifications.scheduleNotificationAsync({
     content: {
     title: title,
@@ -41,8 +38,8 @@ await Notifications.scheduleNotificationAsync({
     trigger: { date: hora } as Notifications.NotificationTriggerInput, // Usa a data diretamente
 });
 
-console.log('Notificação agendada para:', hora);
-Alert.alert('Notificação agendada com sucesso!');
+console.log("Notificação agendada para:", hora);
+Alert.alert("Notificação agendada com sucesso!");
 };
 
 return (

@@ -1,84 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { View, Alert } from 'react-native';
-import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler';
-import Notifications from './notifications';
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import Notification from './notifications';
 
 export default function App() {
-  const [title, setTitle] = useState("Afazeres");
-  const [body, setBody] = useState("Grandeza me esperando");
-  const [hora, setHora] = useState("");
-  const [minuto, setMinuto] = useState("");
-  const [scheduledDate, setScheduledDate] = useState<Date | null>(null);
+  const [title, setTitle] = useState('Afazeres');
+  const [body, setBody] = useState('Grandeza me esperando');
+  const [hour, setHour] = useState('');
+  const [minute, setMinute] = useState('');
 
-  // Define a hora e o minuto atuais ao montar o componente
-  useEffect(() => {
+  // Função para criar a data agendada
+  const createScheduledTime = () => {
     const now = new Date();
-    setHora(now.getHours().toString().padStart(2, "0")); // Ex: "09"
-    setMinuto(now.getMinutes().toString().padStart(2, "0")); // Ex: "05"
-  }, []);
+    const hours = parseInt(hour, 10);
+    const minutes = parseInt(minute, 10);
 
-  // Atualiza a data sempre que a hora ou o minuto mudar
-  useEffect(() => {
-    const updateScheduledDate = () => {
-      const now = new Date();
-      const hour = parseInt(hora, 10);
-      const minute = parseInt(minuto, 10);
+    if (isNaN(hours) || isNaN(minutes)) {
+      Alert.alert('Erro', 'Digite uma hora e minuto válidos.');
+      return null;
+    }
 
-      if (!isNaN(hour) && !isNaN(minute) && hour >= 0 && hour < 24 && minute >= 0 && minute < 60) {
-        const newScheduledDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
+    // Cria uma data com a hora e minuto fornecidos, usando a data atual
+    return new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hours,
+      minutes
+    );
+  };
 
-        // Garante que o horário seja no futuro
-        if (newScheduledDate > now) {
-          setScheduledDate(newScheduledDate);
-        } else {
-          setScheduledDate(null);
-          console.log("Erro", "A hora deve ser no futuro!");
-        }
-      } else {
-        setScheduledDate(null);
-        console.log("Erro", "Hora ou minuto inválidos!");
-      }
-    };
-
-    updateScheduledDate();
-  }, [hora, minuto]); // Executa quando a hora ou minuto mudam
+  const scheduledTime = createScheduledTime();
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <TextInput
-          value={title}
-          onChangeText={setTitle}
-          placeholder="O que queres fazer"
-        />
-        <TextInput 
-          className='w-full h-14 text-center'
-          value={body}
-          onChangeText={setBody}
-          placeholder="Como queres fazer???"
-        />
-        
-        {/* Input para a Hora */}
-        <TextInput
-          value={hora}
-          onChangeText={setHora}
-          placeholder="Hora (0-23)"
-          keyboardType="numeric"
-          maxLength={2}
-        />
-        
-        {/* Input para os Minutos */}
-        <TextInput
-          value={minuto}
-          onChangeText={setMinuto}
-          placeholder="Minuto (0-59)"
-          keyboardType="numeric"
-          maxLength={2}
-        />
-        
-        {/* Envia a data correta para o Notifications apenas se for válida */}
-        {scheduledDate && <Notifications title={title} body={body} data={scheduledDate} />}
-      </View>
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        value={title}
+        onChangeText={setTitle}
+        placeholder="O que queres fazer"
+      />
+      <TextInput
+        style={styles.input}
+        value={body}
+        onChangeText={setBody}
+        placeholder="Como queres fazer???"
+      />
+      <TextInput
+        style={styles.input}
+        value={hour}
+        onChangeText={setHour}
+        placeholder="Hora (HH)"
+        keyboardType="numeric"
+        maxLength={2} // Limita a 2 dígitos
+      />
+      <TextInput
+        style={styles.input}
+        value={minute}
+        onChangeText={setMinute}
+        placeholder="Minuto (MM)"
+        keyboardType="numeric"
+        maxLength={2} // Limita a 2 dígitos
+      />
+      {scheduledTime && (
+        <Notification title={title} body={body} data={scheduledTime} />
+      )}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  input: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+});
