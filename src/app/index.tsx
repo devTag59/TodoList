@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, StyleSheet, Alert } from 'react-native';
 import Notification from './notifications';
 
 export default function App() {
@@ -8,10 +8,25 @@ export default function App() {
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
 
+  // Função para obter a hora e minuto atuais
+  const getCurrentTime = () => {
+    const now = new Date();
+    const currentHour = now.getHours().toString().padStart(2, '0'); // Formato HH
+    const currentMinute = now.getMinutes().toString().padStart(2, '0'); // Formato MM
+    return { currentHour, currentMinute };
+  };
+
+  // Inicializa a hora e minuto com o tempo atual ao montar o componente
+  useEffect(() => {
+    const { currentHour, currentMinute } = getCurrentTime();
+    setHour(currentHour);
+    setMinute(currentMinute);
+  }, []);
+
   // Função para criar a data agendada
   const createScheduledTime = () => {
     const now = new Date();
-    const hours = parseInt(hour, 10);
+    const hours = parseInt(hour, 10)+1;
     const minutes = parseInt(minute, 10);
 
     if (isNaN(hours) || isNaN(minutes)) {
