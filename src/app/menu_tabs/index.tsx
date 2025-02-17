@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button } from "react-native";
 import Notification from "./notifications";
 
-export function AppPlus() {
+export default function AppPlus() {
   const [title, setTitle] = useState("Afazeres");
   const [body, setBody] = useState("Grandeza me esperando");
   const [hour, setHour] = useState(new Date().getHours());
