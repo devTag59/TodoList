@@ -1,13 +1,10 @@
 import { Slot, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "../../styles/global.css";
-export default function RootLayout() {
+export default function TabsLayout() {
   return (
     <>
-      <Stack
-      >
-        <Stack.Screen name="index"/>
-      </Stack>
+      <Slot />
       <StatusBar backgroundColor="gray" style="light"/>
     </>
   );

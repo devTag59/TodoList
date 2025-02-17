@@ -45,7 +45,7 @@ const Notification: React.FC<NotificationProps> = ({ title, body, data }) => {
         },
         trigger: {
           date: hora, // Usando 'date' para garantir que a notificação seja enviada na hora exata escolhida pelo usuário
-        },
+        } as Notifications.NotificationTriggerInput,
       });
 
       Alert.alert("Notificação agendada!", `Será enviada em ${hora.toLocaleTimeString()}`);
