@@ -9,11 +9,11 @@ export default function app() {
     const timout = setTimeout(() => {
       const loggedIn = true;
       if (loggedIn) {
-        router.navigate("/menu_tabs/notifications");
+        router.navigate("/menu_tabs/Casa");
       } else {
         return null;
       }
-    }, 1000);
+    }, 5000);
     return () => clearTimeout(timout);
   }, [router]);
   return <Login />;

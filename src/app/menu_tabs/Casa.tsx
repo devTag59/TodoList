@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button } from "react-native";
-import Notification from "./notifications";
+import Notification from "./_utils/notifications";
 
 export default function AppPlus() {
   const [title, setTitle] = useState("Afazeres");
