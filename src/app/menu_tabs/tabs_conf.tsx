@@ -23,7 +23,7 @@ return (
 // Criar o navegador de abas
 const Tab = createBottomTabNavigator();
 
-export default function TabsNavigator() {
+export function TabsNavigator() {
 return (
 <NavigationContainer>
     <Tab.Navigator>

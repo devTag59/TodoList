@@ -8,7 +8,7 @@ export default function RootLayout() {
     <>
       <Stack
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
         }}
       >
         <Stack.Screen name="index" />

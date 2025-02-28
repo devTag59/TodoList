@@ -14,11 +14,11 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
-    shouldSetBadge: false,
+    shouldSetBadge: true,
   }),
 });
 
-const Notification: React.FC<NotificationProps> = ({ title, body, data }) => {
+export const Notification: React.FC<NotificationProps> = ({ title, body, data }) => {
   // Função para validar e ajustar a data
   const handleAgenda = (selectedTime: Date) => {
     const now = new Date();
@@ -63,4 +63,3 @@ const Notification: React.FC<NotificationProps> = ({ title, body, data }) => {
   );
 };
 
-export default Notification;
