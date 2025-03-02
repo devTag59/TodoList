@@ -31,7 +31,7 @@ const [title, setTitle] = useState("Afazeres");
   const scheduledTime = createScheduledTime();
 
   return (
-    <View className="flex-1 justify-center items-center p-5 bg-gradient-to-b from-blue-500 to-purple-600">
+    <View className="flex-1 justify-center items-center p-5 bg-slate-200">
       <Text className="text-lg font-bold mb-2 text-300">Título:</Text>
       <TextInput
         className="w-full border border-gray-300 p-2 mb-4 rounded bg-white"

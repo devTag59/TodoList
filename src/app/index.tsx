@@ -3,6 +3,7 @@ import Login from "./auth/login";
 import { useEffect } from "react";
 import { useRouter } from "expo-router";
 import * as Notifications from "expo-notifications"
+import Welcome from "./auth/welcome";
 /*Notifications.setNotificationHandler({
   handleNotification:async ()=> ({
     shouldShowAlert: true,
@@ -38,5 +39,5 @@ export default function app() {
     }, 5000);
     return () => clearTimeout(timout);
   }, [router]);
-  return <Login />;
+  return <Welcome/>;
 }
