@@ -6,6 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as yup from "yup";
+import { User } from "./root_user/user";
 
 // Definição do esquema de validação
 const schema = yup.object().shape({
@@ -17,14 +18,13 @@ password: yup
 .required("A senha é obrigatória"),
 });
 
-export default function Login() {
+export default function SignUp() {
 type User = {
 name: string;
 email: string;
+password: string;
 };
-
-const [storedUser, setStoredUser] = useState<User | null>(null); // Estado para armazenar os dados carregados
-
+const [storedUser, setStoredUser] = useState<User | null>(null);// Estado para armazenar os dados carregados
 const {
 control,
 handleSubmit,
@@ -39,6 +39,7 @@ try {
     await AsyncStorage.setItem("@user_data", JSON.stringify(data));
     Alert.alert("Cadastro realizado!", "Usuário salvo no dispositivo.");
     getUserData(); // Atualiza os dados na tela
+    console.log(data)
 } catch (error) {
     Alert.alert("Erro", "Não foi possível salvar os dados.");
 }
@@ -49,7 +50,8 @@ const getUserData = async () => {
 try {
     const data = await AsyncStorage.getItem("@user_data");
     if (data) {
-    setStoredUser(JSON.parse(data)); // Converte JSON para objeto
+    setStoredUser(JSON.parse(data));
+    console.log(data) // Converte JSON para objeto
     }
 } catch (error) {
     Alert.alert("Erro", "Não foi possível recuperar os dados.");
@@ -89,7 +91,6 @@ return (
     )}
     />
     {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
-
     <Text>Email:</Text>
     <Controller
     control={control}
@@ -127,12 +128,7 @@ return (
     <Button title="Cadastrar" onPress={handleSubmit(saveUser)} />
 
     {storedUser && (
-    <View style={styles.userBox}>
-        <Text style={styles.userTitle}>Usuário salvo:</Text>
-        <Text>Nome: {storedUser.name}</Text>
-        <Text>Email: {storedUser.email}</Text>
-        <Button title="Remover Cadastro" color="red" onPress={removeUser} />
-    </View>
+        <User nome={storedUser.name} email={storedUser.email} senha={storedUser.password}/>
     )}
 </View>
 );

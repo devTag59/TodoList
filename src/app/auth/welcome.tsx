@@ -3,7 +3,7 @@ import { View, Text, Button } from "react-native";
 import { useRouter } from "expo-router";
 export default function Welcome() {
 const router=useRouter();
-const loggedIn=false;
+const loggedIn=true;
 const handleContinue=()=>{
     console.log("cliquei em continuar");
     if (loggedIn) {

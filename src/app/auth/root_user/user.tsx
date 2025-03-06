@@ -1,16 +1,14 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
 
-export interface User {
-    Nome: String,
-    senha: String,
+interface UserProps {
+nome: String;
+senha: String;
+email: String;
 }
 
-const User = () => {
-    return (
-        <View>
-            
-        </View>
-    );
-}
-export {User};
+const User: React.FC<UserProps> = ({ nome, senha, email }) => {
+    console.log(nome, senha, email);
+return<></>
+};
+export { User };

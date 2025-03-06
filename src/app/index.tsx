@@ -39,5 +39,6 @@ export default function app() {
     }, 5000);
     return () => clearTimeout(timout);
   }, [router]);
-  return <Welcome/>;
+  return(
+  <Welcome/>) ;
 }

@@ -1,15 +1,9 @@
-import React from "react";
-import { Alert, Button, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Button} from "react-native";
 import * as Notifications from "expo-notifications";
+import { useNotification } from "./NotificationContext"; // Importando o contexto
+import NotificationList from "../menu_tabs/NotificationList";
 
-// Interface para as props
-interface NotificationProps {
-  title: string;
-  body: string;
-  data: Date; // Data e hora agendadas
-}
-
-// Configuração do handler para notificações
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -18,48 +12,86 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export const Notification: React.FC<NotificationProps> = ({ title, body, data }) => {
-  // Função para validar e ajustar a data
+export const Notification: React.FC<{
+  title: string;
+  body: string;
+  data: Date;
+}> = ({ title, body, data }) => {
+  const { addNotification } = useNotification(); // Obtendo a função para adicionar notificações
+  const [able, setAble] = useState(false);
+  const [hour, setHour] = useState(0);
+  const intervalo = setTimeout(() => {
+    setAble(false);
+    return clearTimeout(intervalo);
+  }, 5000);
   const handleAgenda = (selectedTime: Date) => {
     const now = new Date();
     if (selectedTime > now) {
-      return selectedTime; // Retorna a data se for no futuro
+      return selectedTime;
     } else {
       Alert.alert("Hora inválida", "Escolha um horário no futuro.");
       return null;
     }
   };
-
-  // Função para agendar a notificação
   const scheduleNotification = async () => {
+    console.log("Aguardando alguns segundos para executar...");
+
     const hora = handleAgenda(data);
-    if (!hora) return; // Se for inválido, não agenda
-
-    try {
-      console.log("Hora agendada:", hora.toISOString());
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title,
-          body,
-        },
-        trigger: {
-          date: hora, // Usando 'date' para garantir que a notificação seja enviada na hora exata escolhida pelo usuário
-        } as Notifications.NotificationTriggerInput,
-      });
-
-      Alert.alert("Notificação agendada!", `Será enviada em ${hora.toLocaleTimeString()}`);
-      console.log("Notificação programada para:", hora.toLocaleString());
-    } catch (error) {
-      console.error("Erro ao agendar notificação:", error);
-      Alert.alert("Erro", "Não foi possível agendar a notificação.");
+    if (!hora) {
+      console.log("Hora inválida, saindo...");
+      return;
     }
-  };
 
-  return (
-    <View>
-      <Button title="Agendar Notificação" onPress={scheduleNotification} />
-    </View>
-  );
+    // Adiciona a notificação ao contexto imediatamente
+    addNotification({ title, body, date: hora });
+    <NotificationList notifications={[{ title, body, date: hora }]}/>
+    Alert.alert(
+
+      "Notificação agendada!",
+      `Será enviada em ${hora.toLocaleTimeString()}`
+    );
+    setAble(true);
+
+    // Calcula a diferença em milissegundos corretamente
+    const agora = new Date();
+    const diferencaMs = hora.getMinutes() - agora.getMinutes();
+
+    console.log(`Faltam ${diferencaMs / 1000} segundos para a notificação.`);
+
+    // Verifica se a hora já passou (para evitar agendamentos inválidos)
+    if (diferencaMs <= 0) {
+        console.log("O horário já passou. Notificação não será agendada.");
+        return;
+    }
+
+    // Executa a notificação apenas após o tempo determinado
+    const timer = setTimeout(async () => {
+      try {
+        await Notifications.scheduleNotificationAsync({
+          content: { title, body },
+          trigger: { date: hora } as Notifications.NotificationTriggerInput,
+        });
+
+        console.log("Notificação enviada!");
+
+      } catch (error) {
+        console.error("Erro ao agendar notificação:", error);
+        Alert.alert("Erro", "Não foi possível agendar a notificação.");
+      }
+    }, 10000); // Aguarda o tempo correto em milissegundos
+
+    return () => {
+      console.log("Cancelando o timer...");
+      clearTimeout(timer);
+    };
 };
 
+
+  return (
+    <Button
+      title="Agendar Notificação"
+      onPress={scheduleNotification}
+      disabled={able}
+    />
+  );
+};
