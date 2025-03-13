@@ -5,7 +5,7 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 interface NotificationListProps {
 notifications: { title: string; body: string; date: Date }[];
 }
-const NotificationList: React.FC<NotificationListProps> = ({ notifications }) => {
+const NotificationList: React.FC<NotificationListProps> = ({ notifications=[] }) => {
     console.log("NotificationList renderizado. Notificações:", notifications); // Depuração
 return (
 <View style={styles.container} className="flex-1 justify-center items-center content-center p-5 bg-slate-200 mt-10">

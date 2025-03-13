@@ -32,7 +32,7 @@ export default function app() {
     const timout = setTimeout(() => {
       const loggedIn = false;
       if (loggedIn) {
-        router.navigate("/menu_tabs/Casa");
+        router.navigate("/menu_tabs/screens/Casa");
       } else {
         return null;
       }

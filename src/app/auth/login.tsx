@@ -33,7 +33,7 @@ try {
         Alert.alert("Login realizado!", "Bem-vindo de volta.");
         console.log(data);
         console.log(user.password);
-        router.push("/menu_tabs/Casa");
+        router.push("/menu_tabs/screens/Casa");
     } else {
         Alert.alert("Erro", "Email ou senha incorretos.");
     }

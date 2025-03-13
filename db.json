@@ -1,0 +1,64 @@
+{
+  "notifications": [
+    {
+      "id": "1",
+      "title": "Reunião",
+      "body": "Reunião de equipe às 10:00.",
+      "date": "2023-10-10T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "Lembrete",
+      "body": "Comprar leite no mercado.",
+      "date": "2023-10-10T18:00:00.000Z"
+    },
+    {
+      "id": "3f14",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:03:00.000Z"
+    },
+    {
+      "id": "81c1",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:07:00.000Z"
+    },
+    {
+      "id": "81c11",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:04:00.000Z"
+    },
+    {
+      "id": "81c111",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:16:00.000Z"
+    },
+    {
+      "id": "81c1111",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:16:00.000Z"
+    },
+    {
+      "id": "81c11111",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:16:00.000Z"
+    },
+    {
+      "id": "81c111111",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:16:00.000Z"
+    },
+    {
+      "id": "81c1111111",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T10:16:00.000Z"
+    }
+  ]
+}

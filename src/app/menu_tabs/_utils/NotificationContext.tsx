@@ -6,11 +6,13 @@ interface Notification {
   date: Date;
 }
 
-const NotificationContext = createContext<{
+interface NotificationContextType {
   notifications: Notification[];
   addNotification: (notification: Notification) => void;
-}>({
-  notifications: [],
+}
+
+const NotificationContext = createContext<NotificationContextType>({
+  notifications: [{ title: "Teste", body: "Teste", date: new Date() }],
   addNotification: () => {},
 });
 
