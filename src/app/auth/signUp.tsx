@@ -1,164 +1,86 @@
-import React, { useEffect, useState } from "react";
-import { 
-View, Text, TextInput, Button, Alert, StyleSheet 
-} from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as yup from "yup";
-import { User } from "./root_user/user";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, View, TextInput, Button, Alert,Text } from "react-native";
 
-// Definição do esquema de validação
-const schema = yup.object().shape({
-name: yup.string().required("O nome é obrigatório"),
-email: yup.string().email("Email inválido").required("O email é obrigatório"),
-password: yup
-.string()
-.min(6, "A senha deve ter pelo menos 6 caracteres")
-.required("A senha é obrigatória"),
-});
+const Cadastro = () => {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const router = useRouter();
 
-export default function SignUp() {
-type User = {
-name: string;
-email: string;
-password: string;
-};
-const [storedUser, setStoredUser] = useState<User | null>(null);// Estado para armazenar os dados carregados
-const {
-control,
-handleSubmit,
-formState: { errors },
-} = useForm({
-resolver: yupResolver(schema),
-});
-
-// 🔹 Função para salvar o usuário no AsyncStorage
-const saveUser = async (data: any) => {
-try {
-    await AsyncStorage.setItem("@user_data", JSON.stringify(data));
-    Alert.alert("Cadastro realizado!", "Usuário salvo no dispositivo.");
-    getUserData(); // Atualiza os dados na tela
-    console.log(data)
-} catch (error) {
-    Alert.alert("Erro", "Não foi possível salvar os dados.");
-}
-};
-
-// 🔹 Função para recuperar os dados do usuário
-const getUserData = async () => {
-try {
-    const data = await AsyncStorage.getItem("@user_data");
-    if (data) {
-    setStoredUser(JSON.parse(data));
-    console.log(data) // Converte JSON para objeto
+  const handleCadastro = async () => {
+    if (!email || !senha) {
+      Alert.alert("Erro", "Preencha todos os campos.");
+      return;
     }
-} catch (error) {
-    Alert.alert("Erro", "Não foi possível recuperar os dados.");
-}
-};
 
-// 🔹 Função para remover os dados salvos
-const removeUser = async () => {
-try {
-    await AsyncStorage.removeItem("@user_data");
-    setStoredUser(null); // Remove do estado
-    Alert.alert("Dados removidos!", "O usuário foi apagado.");
-} catch (error) {
-    Alert.alert("Erro", "Não foi possível remover os dados.");
-}
-};
+    // Envia os dados para a API
+    try {
+      const response = await fetch("http://10.1.19.2:3000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, senha }),
+      });
 
-// 🔹 Carregar os dados do usuário ao iniciar o app
-useEffect(() => {
-getUserData();
-}, []);
+      if (response.ok) {
+        Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+        // Redireciona para a tela de login após o cadastro
+        router.push("/auth/login");
+      } else {
+        Alert.alert("Erro", "Falha ao cadastrar usuário.");
+      }
+    } catch (error) {
+      console.log("Erro ao cadastrar usuário:", error);
+      Alert.alert("Erro", "Falha ao conectar com o servidor.");
+    }
+  };
 
-return (
-<View style={styles.container}>
-    <Text>Nome:</Text>
-    <Controller
-    control={control}
-    name="name"
-    render={({ field: { onChange, onBlur, value } }) => (
-        <TextInput
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Cadastro</Text>
+      <TextInput
         style={styles.input}
-        placeholder="Digite seu nome"
-        onBlur={onBlur}
-        onChangeText={onChange}
-        value={value}
-        />
-    )}
-    />
-    {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
-    <Text>Email:</Text>
-    <Controller
-    control={control}
-    name="email"
-    render={({ field: { onChange, onBlur, value } }) => (
-        <TextInput
-        style={styles.input}
-        placeholder="Digite seu email"
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
         keyboardType="email-address"
-        onBlur={onBlur}
-        onChangeText={onChange}
-        value={value}
-        />
-    )}
-    />
-    {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
-
-    <Text>Senha:</Text>
-    <Controller
-    control={control}
-    name="password"
-    render={({ field: { onChange, onBlur, value } }) => (
-        <TextInput
+      />
+      <TextInput
         style={styles.input}
-        placeholder="Digite sua senha"
+        placeholder="Senha"
+        value={senha}
+        onChangeText={setSenha}
         secureTextEntry
-        onBlur={onBlur}
-        onChangeText={onChange}
-        value={value}
-        />
-    )}
-    />
-    {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
-
-    <Button title="Cadastrar" onPress={handleSubmit(saveUser)} />
-
-    {storedUser && (
-        <User nome={storedUser.name} email={storedUser.email} senha={storedUser.password}/>
-    )}
-</View>
-);
-}
+      />
+      <Button title="Cadastrar" onPress={handleCadastro} />
+      <Button
+        title="Voltar para o Login"
+        onPress={() => router.push("/auth/login")}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-padding: 20,
-justifyContent: "center",
-},
-input: {
-borderWidth: 1,
-borderColor: "#ccc",
-padding: 10,
-marginBottom: 10,
-borderRadius: 5,
-},
-error: {
-color: "red",
-marginBottom: 10,
-},
-userBox: {
-marginTop: 20,
-padding: 15,
-backgroundColor: "#e0ffe0",
-borderRadius: 5,
-},
-userTitle: {
-fontWeight: "bold",
-marginBottom: 5,
-},
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  input: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
 });
+
+export default Cadastro;

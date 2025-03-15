@@ -27,23 +27,15 @@ export const Notification: React.FC<{
 
     // Busca o último ID das notificações existentes
     try {
-      const response = await fetch("http://192.168.1.10:3000/notifications");
-      const notifications = await response.json();
-
-      // Calcula o próximo ID
-      const lastId = notifications.length > 0 ? notifications[notifications.length - 1].id : 0;
-      const newId = lastId + 1;
-
       // Dados da notificação com o novo ID
       const newNotification = {
-        id: newId,
         title,
         body,
         date: hora.toISOString(), // Converte a data para uma string ISO
       };
 
       // Envia a notificação para o JSON Server
-      const postResponse = await fetch("http://192.168.1.10:3000/notifications", {
+      const postResponse = await fetch("http://10.1.19.2:3000/notifications", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,6 +44,7 @@ export const Notification: React.FC<{
       });
 
       if (postResponse.ok) {
+        console.log("notifica")
         Alert.alert(
           "Notificação agendada!",
           `Será enviada em ${hora.toLocaleTimeString()}`

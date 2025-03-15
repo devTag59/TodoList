@@ -12,7 +12,7 @@ case "senhora":
 export default function Welcome() {
 const imageName = "senhora";
 const router = useRouter();
-const loggedIn = true;
+const loggedIn = false;
 const handleContinue = () => {
 console.log("cliquei em continuar");
 if (loggedIn) {

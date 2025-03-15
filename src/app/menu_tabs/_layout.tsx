@@ -6,7 +6,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import "./navigation/tabsNavigator"
 const fetchNotificationCount = async () => {
   try {
-    const response = await fetch("http://192.168.1.10:3000/notifications");
+    const response = await fetch("http://10.1.19.2:3000/notifications");
     const notifications = await response.json();
     return notifications.length; // Retorna a quantidade de notificações
   } catch (error) {
@@ -73,16 +73,6 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="screens/NotificationScreen"
-        options={{
-          tabBarLabel: ({ focused }) => <Text style={{ color: focused ? "white" : "#a0a0a0" }}>Lista</Text>,
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="notifications-outline" size={24} color={color} />
-          ),
-          tabBarBadge: badge, // Variavel para adicionar notificacoes com o número 3
-        }}
-      />
-      <Tabs.Screen
-        name="screens/NotificationList"
         options={{
           tabBarLabel: ({ focused }) => <Text style={{ color: focused ? "white" : "#a0a0a0" }}>Lista</Text>,
           tabBarIcon: ({ color }) => (

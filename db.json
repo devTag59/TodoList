@@ -59,6 +59,30 @@
       "title": "Afazeres",
       "body": "Grandeza me esperando",
       "date": "2025-03-13T10:16:00.000Z"
+    },
+    {
+      "id": "5420",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T15:33:00.000Z"
+    },
+    {
+      "id": "1709",
+      "title": "Afazeres",
+      "body": "Grandeza me esperando",
+      "date": "2025-03-13T15:33:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "twentyhacker23@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": "7298",
+      "email": "jobfialhoo@gmail.com",
+      "senha": "654321"
     }
   ]
 }

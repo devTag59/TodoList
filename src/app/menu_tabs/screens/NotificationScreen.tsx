@@ -15,7 +15,7 @@ const NotificationScreen: React.FC = () => {
 
   const buscarNotifications = async () => {
     try {
-      const response = await fetch("http://192.168.1.10:3000/notifications");
+      const response = await fetch("http://10.1.19.2:3000/notifications");
       const data = await response.json();
       setNotify(data);
       console.log(data);
@@ -32,12 +32,12 @@ const NotificationScreen: React.FC = () => {
 
   return (
     <ScrollView className="flex-1 bg-slate-200 overflow-hidden ">
-      <Text style={styles.title}>Notificações Agendadas</Text>
+      <Text className="text-3xl font-bold text-center">Notificações Agendadas</Text>
       <FlatList
         data={notify}
         keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
         ListEmptyComponent={
-          <Text style={{ textAlign: "center", marginTop: 20 }}>
+          <Text className="text-2xl font-bold text-center">
             Nenhuma notificação agendada.
           </Text>
         }
@@ -45,9 +45,9 @@ const NotificationScreen: React.FC = () => {
         horizontal={false}
         renderItem={({ item }: { item: Notification }) => (
           <View className="flex-1 bottom-10 justify-center items-baseline p-5 bg-slate-50 overflow-hidden m-3 rounded-2xl border">
-            <Text style={styles.notificationTitle}>{item.title}</Text>
-            <Text>{item.body}</Text>
-            <Text style={styles.notificationDate}>
+            <Text className="text-2xl font-bold text-center">{item.title}</Text>
+            <Text className="text-2xl font-normal text-center">{item.body}</Text>
+            <Text className="text-2xl font-light text-center">
               {new Date(item.date).toLocaleString()}
             </Text>
           </View>
@@ -56,32 +56,4 @@ const NotificationScreen: React.FC = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#f5f5f5",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  notificationItem: {
-    backgroundColor: "#fff",
-    padding: 16,
-    marginVertical: 8,
-    borderRadius: 8,
-  },
-  notificationTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  notificationDate: {
-    fontSize: 12,
-    color: "#666",
-  },
-});
-
 export default NotificationScreen;
