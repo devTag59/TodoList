@@ -1,52 +1,77 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Button, View } from "react-native";
 import * as Notifications from "expo-notifications";
 
 // Interface para as props
 interface NotificationProps {
-title: string;
-body: string;
-data: Date; // Data e hora agendadas
+  title: string;
+  body: string;
+  data: Date; // Data e hora agendadas
 }
 
-// Componente de Notificação
-const Notification: React.FC<NotificationProps> = ({ title, body, data }) => {
-// Função para validar a hora
-const handleAgenda = (selectedTime: Date) => {
-const now = new Date();
-
-if (selectedTime > now) {
-    return selectedTime; // Retorna a data se for no futuro
-} else {
-    Alert.alert("Hora inválida", "Escolha um horário no futuro.");
-    return null;
-}
-};
-
-// Função para agendar a notificação
-const scheduleNotification = async () => {
-const hora = handleAgenda(data);
-if (!hora) return; // Se for inválido, não agenda
-
-// Configurações da notificação
-await Notifications.scheduleNotificationAsync({
-    content: {
-    title: title,
-    body: body,
-    data: { scheduledTime: hora.toISOString() }, // Salva a hora agendada
-    },
-    trigger: { date: hora } as Notifications.NotificationTriggerInput, // Usa a data diretamente
+// Configuração do handler para notificações
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
 });
 
-console.log("Notificação agendada para:", hora);
-Alert.alert("Notificação agendada com sucesso!");
-};
+const Notification: React.FC<NotificationProps> = ({ title, body, data }) => {
+  // Solicita permissão para notificações ao iniciar o app
+  useEffect(() => {
+    const requestPermissions = async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permissão necessária", "Ative as notificações nas configurações do dispositivo.");
+      }
+    };
+    requestPermissions();
+  }, []);
 
-return (
-<View>
-    <Button title="Agendar Notificação" onPress={scheduleNotification} />
-</View>
-);
+  // Função para validar e ajustar a data
+  const handleAgenda = (selectedTime: Date) => {
+    const now = new Date();
+    if (selectedTime > now) {
+      return selectedTime; // Retorna a data se for no futuro
+    } else {
+      Alert.alert("Hora inválida", "Escolha um horário no futuro.");
+      return null;
+    }
+  };
+
+  // Função para agendar a notificação
+  const scheduleNotification = async () => {
+    const hora = handleAgenda(data);
+    if (!hora) return; // Se for inválido, não agenda
+
+    try {
+      console.log("Hora agendada:", hora.toISOString());
+
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title,
+          body,
+        },
+        trigger: {
+          seconds: (hora.getTime() - new Date().getTime()) / 1000, // Diferença em segundos
+        } as Notifications.NotificationTriggerInput,
+      });
+
+      Alert.alert("Notificação agendada!", `Será enviada em ${hora.toLocaleTimeString()}`);
+      console.log("Notificação programada para:", hora.toLocaleString());
+    } catch (error) {
+      console.error("Erro ao agendar notificação:", error);
+      Alert.alert("Erro", "Não foi possível agendar a notificação.");
+    }
+  };
+
+  return (
+    <View>
+      <Button title="Agendar Notificação" onPress={scheduleNotification} />
+    </View>
+  );
 };
 
 export default Notification;
