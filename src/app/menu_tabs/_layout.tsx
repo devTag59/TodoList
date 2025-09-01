@@ -6,7 +6,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import "./navigation/tabsNavigator"
 const fetchNotificationCount = async () => {
   try {
-    const response = await fetch("http://10.1.19.2:3000/notifications");
+    const response = await fetch("http://localhost:3000/notifications");
     const notifications = await response.json();
     return notifications.length; // Retorna a quantidade de notificações
   } catch (error) {
@@ -30,29 +30,54 @@ export default function TabsLayout() {
 
   const badge=notificationCount
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "white", // Cor do ícone/texto ativo
-        tabBarInactiveTintColor: "#a0a0a0", // Cor do ícone/texto inativo
-        headerShown: false, // Oculta o cabeçalho
-        tabBarStyle: {
-          height: 80, // Aumenta a altura da barra de abas
-          borderTopWidth: 0, // Remove a borda superior
-          backgroundColor: "#ADD8E6", // Azul fraco como fundo da barra de abas
-          margin: 5,
-          borderRadius: 30, // Borda arredondada
-          position: 'absolute',
-        },
-        tabBarItemStyle: {
-          justifyContent: "center", // Centraliza o conteúdo verticalmente
-        },
-        tabBarLabelStyle: {
-          fontSize: 12, // Tamanho da fonte do texto da aba
-          fontWeight: "bold", // Peso da fonte do texto da aba
-          marginBottom: 10, // Ajusta o espaçamento do texto
-        },
-      }}
-    >
+  <Tabs
+  screenOptions={{
+    tabBarActiveTintColor: "#FFFFFF",
+    tabBarInactiveTintColor: "#E6F7FF",
+    headerShown: false,
+    tabBarStyle: {
+      height: 85,
+      borderTopWidth: 0,
+      backgroundColor: "#08308F",
+      margin: 12,
+      borderRadius: 35,
+      position: 'relative',
+      // Sombra mais pronunciada
+      shadowColor: "#4A90E2",
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.3,
+      shadowRadius: 4.65,
+      elevation: 8,
+    },
+    tabBarItemStyle: {
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: 25,
+      marginHorizontal: 6,
+      marginVertical: 10,
+      height: 50,
+    },
+    tabBarLabelStyle: {
+      fontSize: 12,
+      fontWeight: "700",
+      marginBottom: 12,
+      textShadowColor: "rgba(0, 0, 0, 0.3)",
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 2,
+    },
+    // Indicador visual melhorado
+    tabBarIndicatorStyle: {
+      backgroundColor: "rgba(255, 255, 255, 0.4)",
+      height: 45,
+      borderRadius: 22,
+      top: 10,
+    },
+  }}
+>
+
       <Tabs.Screen
         name="screens/Casa"
         options={{
