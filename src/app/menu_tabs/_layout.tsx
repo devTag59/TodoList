@@ -6,7 +6,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import "./navigation/tabsNavigator"
 const fetchNotificationCount = async () => {
   try {
-    const response = await fetch("http://localhost:3000/notifications");
+    const response = await fetch("http://192.168.1.13:3000/notifications");
     const notifications = await response.json();
     return notifications.length; // Retorna a quantidade de notificações
   } catch (error) {

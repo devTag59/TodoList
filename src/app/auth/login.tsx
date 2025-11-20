@@ -30,7 +30,7 @@ const Login = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:3000/users");
+      const response = await fetch("http://192.168.1.13:3000/users");
       const usersData = await response.json();
       setUsers(usersData);
       console.log(usersData)
@@ -92,7 +92,7 @@ const Login = () => {
             placeholder="Senha"
             value={senha}
             onChangeText={setSenha}
-            secureTextEntry
+       
             editable={!loading}
           />
         </View>

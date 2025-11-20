@@ -17,7 +17,7 @@ const NotificationScreen: React.FC = () => {
   const buscarNotifications = async () => {
     try {
       setRefreshing(true);
-      const response = await fetch("http://localhost:3000/notifications");
+      const response = await fetch("http://192.168.1.13:3000/notifications");
       const data = await response.json();
       setNotify(data);
       console.log(data);

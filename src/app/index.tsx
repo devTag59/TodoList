@@ -31,8 +31,8 @@ export default function app() {
   useEffect(() => {
     const timout = setTimeout(() => {
       const loggedIn = false;
-      if (loggedIn) {
-        router.navigate("/menu_tabs/screens/Casa");
+      if (true) {
+        router.navigate("/auth/login");
       } else {
         return null;
       }
