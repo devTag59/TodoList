@@ -9,7 +9,7 @@ export default function AuthLayout() {
         <Stack.Screen name="login"/>
         <Stack.Screen name="signUp"/>
       </Stack>
-      <StatusBar backgroundColor="gray" style="light"/>
+      <StatusBar backgroundColor="gray" style="dark"/>
     </>
   );
 }

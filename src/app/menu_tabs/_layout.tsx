@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Tabs } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -15,6 +16,7 @@ const fetchNotificationCount = async () => {
   }
 };
 export default function TabsLayout() {
+  <StatusBar backgroundColor="grey" style="dark" />
   const [notificationCount, setNotificationCount] = useState(0);
 
   useFocusEffect(
